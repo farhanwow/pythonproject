@@ -1,0 +1,109 @@
+#DFT
+import math
+import array as array
+import numpy as np
+import matplotlib.pyplot as plt
+
+K = 1024
+N = 4
+om = np.array((range(0, K)))
+
+
+
+Xs = [0] * K
+kom = [0] * N
+
+om = [(i / K * 2 * math.pi) for i in om]
+
+Xs = [(1 - 0.5 * math.cos(i) + 1.5 * 1j * math.sin(i)) for i in om]
+
+ampXS = np.absolute(Xs)
+phaseXS = np.angle(Xs)
+realXS = np.real(Xs)
+imagXS = np.imag(Xs)
+
+
+
+
+
+k = np.array((range(0, N)))
+
+kom = [(i * 2 * math.pi) / N for i in k]
+
+
+
+xD = [1, -1, np.zeros(N - 3), 0.5]
+
+
+
+xDdft = np.fft.fft(xD, N)
+
+
+
+ampXD = np.absolute(xDdft)
+phaseXD = np.angle(xDdft)
+realXD = np.real(xDdft)
+imagXD = np.imag(xDdft)
+
+plt.figure()
+plt.stem(range(0, N, 1), xD)
+plt.show()
+
+plt.figure()
+plt.subplot(211)
+plt.plot(om, ampXS, '-', kom, ampXD, 'o')
+plt.ylabel('Amplitude')
+plt.subplot(212)
+plt.plot(om, phaseXS, '-', kom, phaseXD, 'o')
+plt.ylabel('Faze')
+plt.show()
+
+plt.figure()
+plt.subplot(211)
+plt.plot(om, realXS, '-', kom, realXD, 'o')
+plt.ylabel('"-" Re{X(w)}, "o" Re{X(k)}')
+plt.subplot(212), \
+plt.plot(om, imagXS, '-', kom, imagXD, 'o')
+plt.ylabel('"-" Im{X(w)}, "o" Im{X(k)}')
+plt.show()
+
+
+
+P=L=N=10
+m = 1
+
+
+
+n = np.array(range(0, L))
+k = np.array(range(0, N))
+
+x = [math.cos(2 * math.pi * ( m / P ) * i) for i in n]
+
+xDFT = np.fft.fft(x, N)
+
+ampXD = np.absolute(xDFT)
+phaseXD = np.angle(xDFT)
+realXD = np.real(xDFT)
+imagXD = np.imag(xDFT)
+
+plt.figure()
+plt.stem(n,x)
+plt.show()
+
+plt.figure()
+plt.subplot(211)
+plt.stem(k, ampXD)
+plt.ylabel('Amplituda')
+plt.subplot(212)
+plt.stem(k,phaseXD)
+plt.ylabel('Faza')
+plt.show()
+
+plt.figure()
+plt.subplot(211)
+plt.stem(k, realXD)
+plt.ylabel('Realni dio')
+plt.subplot(212), \
+plt.stem(k, imagXD)
+plt.ylabel('Imaginarni dio')
+plt.show()

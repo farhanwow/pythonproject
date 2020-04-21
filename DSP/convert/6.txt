@@ -1,0 +1,116 @@
+%matplotlib inline
+import numpy as np
+import matplotlib.pyplot as plt
+
+f = 12.5
+n = 2**13
+t = 2
+x = np.linspace(0, t, n)
+y = np.sin(2*np.pi*f*x)
+plt.plot(x,y);
+plt.show()
+
+y_fft = np.fft.fft(y)
+freq = np.fft.fftfreq(n,t/n)
+plt.plot(freq[:50], np.sqrt(np.real(np.conj(y_fft)*y_fft))[:50],'.');
+
+f = 12.5
+n = 2**13
+t = 2
+x = np.linspace(0, t, n)
+y = np.ones(n)
+plt.plot(x,y);
+plt.show()
+
+y_fft = np.fft.fft(y)
+freq = np.fft.fftfreq(n,t/n)
+plt.plot(freq[:50], np.sqrt(np.real(np.conj(y_fft)*y_fft))[:50]);
+
+f = 12.5
+n = 2**13
+t = 2
+x = np.linspace(0, t, n)
+y = np.sin(2*np.pi*f*x)+1
+plt.plot(x,y);
+plt.show()
+
+y_fft = np.fft.fft(y)
+freq = np.fft.fftfreq(n,t/n)
+plt.plot(freq[:50], np.sqrt(np.real(np.conj(y_fft)*y_fft))[:50]);
+
+f1 = 12.5
+f2 = 15
+n = 2**13
+t = 2
+x = np.linspace(0, t, n)
+y = np.sin(2*np.pi*f1*x)+np.sin(2*np.pi*f2*x)
+plt.plot(x,y);
+plt.show()
+
+y_fft = np.fft.fft(y)
+freq = np.fft.fftfreq(n,t/n)
+plt.plot(freq[:50], np.sqrt(np.real(np.conj(y_fft)*y_fft))[:50]);
+
+f = 2**10
+n = 2**10
+t = 1
+x = np.linspace(0, t, n)
+y = np.sin(2*np.pi*f*x)
+plt.plot(x,y);
+plt.show()
+
+y_fft = np.fft.fft(y)
+freq = np.fft.fftfreq(n,t/n)
+plt.plot(freq[:n//2], np.sqrt(np.real(np.conj(y_fft)*y_fft))[:n//2]);
+
+n = 2**10
+t = 1
+x = np.linspace(0, t, n)
+y = np.random.random(n)-0.5
+plt.plot(x,y);
+plt.show()
+
+y_fft = np.fft.fft(y)
+freq = np.fft.fftfreq(n,t/n)
+plt.plot(freq[:n//2], np.sqrt(np.real(np.conj(y_fft)*y_fft))[:n//2]);
+
+n = 2**10
+t = 1
+x = np.linspace(0, t, n)
+p = np.zeros(n)
+
+for i in range(20000):
+    y = np.random.random(n)-0.5
+    y_fft = np.fft.fft(y)
+    p += np.sqrt(np.real(np.conj(y_fft)*y_fft))
+p/=i
+
+p /= p.sum()
+
+freq = np.fft.fftfreq(n,t/n)
+plt.plot(freq[:n//2], p[:n//2]);
+
+f = 3
+n = 2**12
+t = 2
+x = np.linspace(0, t, n)
+
+y = np.sin(2*np.pi*f*x)
+y_noise = y+(2*np.random.random(n)-1)
+
+plt.plot(x,y_noise,'.');
+plt.plot(x,y,linewidth=5);
+plt.show()
+
+y_fft = np.fft.fft(y_noise)/n
+r = np.sqrt(np.real(np.conj(y_fft)*y_fft))
+freq = np.fft.fftfreq(n,t/n)
+plt.plot(freq[:50], r[:50]);
+plt.show()
+
+y_fft[r<0.1] = 0
+
+y_ = np.fft.ifft(y_fft)*n
+
+plt.plot(x,np.real(np.sin(2*np.pi*f*x)));
+plt.plot(x,np.real(y_));
